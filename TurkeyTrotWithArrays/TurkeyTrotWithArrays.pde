@@ -3,35 +3,42 @@ PImage farmyard;
 boolean gameOver = false;
 
  // Declare and initialize a variable (numberOfTurkeys) to store how many turkeys are in the race (2-8)
- 
+ int numberOfTurkeys = 8;
  // Declare an array (turkeys) that is big enough to hold all the turkeys 
- 
+ Turkey[] turkeys = new Turkey[numberOfTurkeys];
+
+PImage grass;
+int width = 800;
+int height = 700;
+int winner;
 
 void setup() {
   // This sets the size of the text used for the lane labels.
   textSize(20);
   
  // Set the size of the race course (make the width bigger for a longer race).
- 
+ size(800, 700);
  
  // Load a picture into the farmyard to be used as the race background (grass.jpg has been provided for you),
- 
+grass = loadImage("grass.jpg");
 
  // Resize the farmyard so it will fill the sketch
- 
+ grass.resize(width, height);
  
 
  // Create the turkeys and put them in the array. 
  // Example:     turkeys[0] = new Turkey(0, y-value);
  // NOTE: Each turkey will need a unique y value to place it in a different racing lane
- 
+ for(int i = 0; i < numberOfTurkeys; i++){
+   turkeys[i] = new Turkey(0, (height/numberOfTurkeys)*i + 10);
+ }
 
 }
 
 void draw() {
   
  // Draw the background (farmyard)
-  
+  background(grass);
  if (!gameOver) {
  
     drawLaneMarkers();   // This method draws the lines between each racing lane
@@ -51,6 +58,8 @@ void draw() {
    fill(0);
    textSize(50);
    text ("RACE OVER", width/4, height/2);
+    textSize(30);
+   text ("Winner: " + winner, width/4, height/2 + 30);
    drawConfetti();
  }
 }
@@ -58,12 +67,16 @@ void draw() {
 void drawTurkeys() {
   
     //  Put code in here to tell each turkey to draw itself
-    
+     for(int i = 0; i < numberOfTurkeys; i++){
+       turkeys[i].draw();
+     }
 }
 void moveTurkeys() {
   
     //  Put code in here to tell each turkey to move itself
-    
+    for(int i = 0; i < numberOfTurkeys; i++){
+       turkeys[i].move();
+     }
 }
 
 void checkForWinner() {
@@ -72,12 +85,25 @@ void checkForWinner() {
     //  If a turkey has crossed the line, set     gameOver = true; 
     //  Also write the text "WINNER" in the winning turkey's race lane, so you can see who won.
     //  NOTE: There might be a tie!
+     for(int i = 0; i < numberOfTurkeys; i++){
+       if(turkeys[i].x > width-30){
+        winner = i+1;
+         gameOver = true;
+     }
+     }
+    
  
 }
 
 void drawLaneMarkers() {
    // Put code here to draw lines to show the lanes of the racing course
    // Add text in each lane to show which turkey # is racing in it
+     for(int i = 0; i < numberOfTurkeys; i++){
+      line(0, turkeys[i].y + (height/numberOfTurkeys), width, turkeys[i].y + (height/numberOfTurkeys));
+      fill(0,0,0);
+      text(i +1, width-20, turkeys[i].y + (height/numberOfTurkeys/2));
+     }
+     line(width -30, 0, width - 30, height);
 } 
 
 class Confetti {

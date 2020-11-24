@@ -2,8 +2,8 @@ public class Turkey {
 int x=0;
 int y=0;
 int size = 100;
-int minSpeed = 1;
-int maxSpeed = 5;
+int minSpeed = 0;
+int maxSpeed = 8;
 
 PImage turkey = loadImage("turkey.png");
 
